@@ -1,3 +1,6 @@
+layout: page
+title: A Dive Into the Efficiency of Recipes 
+description: DSC 80 Spring Quarter Final Project
 remote_theme: pages-themes/cayman@v0.2.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
