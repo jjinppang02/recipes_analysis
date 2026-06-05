@@ -75,7 +75,8 @@ Here is the `head` of `df_clean`:
 `df_clean` resulted in 19 columns and 219228 rows.
 
 # **Univariate Analysis**
-One of the distributions that I 
+Two distributions that I analyzed was the distribution of ratings and the distributions of efficiency (steps/min).
+
 <iframe 
   src="assets/distribution_plots.html" 
   width="800" 
@@ -83,4 +84,5 @@ One of the distributions that I
   frameborder="0"
 ></iframe>
 
+From the graphs we see two things. First, in the distribution of ratings, we see that most recipes receive the highest possible rating of 5, indicating users tend to rate positively. Meanwhile, recipe efficiency (steps per minute) is right‑skewed — most recipes are relatively slow and detailed, with only a few achieving high efficiency.
 
