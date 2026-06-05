@@ -65,6 +65,11 @@ Here is the `head` of `df_clean`:
 `df_clean` resulted in 19 columns and 219228 rows.
 
 
-<iframe src="assets/distribution_plots.html" width="800" height="500" frameborder="0"></iframe>
+<iframe 
+  src="assets/distribution_plot.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
 
 
