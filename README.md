@@ -12,6 +12,8 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 
 `recipes` contained the following 12 columns with 83782 rows:
 
+<div style="overflow-x: auto;">
+
 | Column Name | Dtype | Description |
 | --------- | -------- | -------- |
 | `name` | object | Recipe name. |
@@ -27,6 +29,7 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 | `ingredients` | object | List of ingredients. |
 | `n_ingredients` | int64 | Number of ingredients. |
 
+</div>
 
 <br>
 
