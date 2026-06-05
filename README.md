@@ -35,6 +35,8 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 
 And `ratings` contained the following 5 columsn with 731927 rows:
 
+<div style="overflow-x: auto;">
+
 | Column Name | Dtype | Description |
 | --------- | -------- | -------- |
 | `user_id` | float64 | User ID. |
@@ -42,6 +44,8 @@ And `ratings` contained the following 5 columsn with 731927 rows:
 | `date` | object| Date of interaction. |
 | `rating` | float64 | Rating given. |
 | `review` | object | Review text. |
+
+</div>
 
 <br>
 
@@ -70,9 +74,10 @@ Here is the `head` of `df_clean`:
 
 `df_clean` resulted in 19 columns and 219228 rows.
 
-
+# **Univariate Analysis**
+One of the distributions that I 
 <iframe 
-  src="assets/distribution_plot.html" 
+  src="assets/distribution_plots.html" 
   width="800" 
   height="500" 
   frameborder="0"
