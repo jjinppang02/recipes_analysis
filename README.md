@@ -3,7 +3,6 @@ For the DSC 80 Spring Final Project, I chose to investigate the Recipes Data Set
 
 Author : Jacob Lee
 <br>
-<br>
 
 # **Introduction and Question Identification**
 When it comes to recipes, there is much that can be analyzed. One thing that I wanted to dive deeper into was the efficiency of recipes, measured in number of steps per minute. In order to do so, I was given two sets of data, `recipes` and `ratings`.  
@@ -74,6 +73,8 @@ Here is the `head` of `df_clean`:
 
 `df_clean` resulted in 19 columns and 219228 rows.
 
+<br>
+
 # **Univariate Analysis**
 Two distributions that I analyzed was the distribution of ratings and the distributions of efficiency (steps/min).
 
@@ -85,4 +86,16 @@ Two distributions that I analyzed was the distribution of ratings and the distri
 ></iframe>
 
 From the graphs we see two things. First, in the distribution of ratings, we see that most recipes receive the highest possible rating of 5, indicating users tend to rate positively. Meanwhile, recipe efficiency (steps per minute) is right‑skewed — most recipes are relatively slow and detailed, with only a few achieving high efficiency.
+
+<br>
+
+# **Bivariate Analysis**
+For the bivariate analysis, I delved into the conditional distribution of ratings by efficiency quartiles.
+
+<iframe 
+  src="assets/cond_distribution_plots.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
 
