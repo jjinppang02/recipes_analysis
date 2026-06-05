@@ -11,6 +11,7 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 <br>
 
 `recipes` contained the following 12 columns with 83782 rows:
+
 | Column Name | Dtype | Description |
 | --------- | -------- | -------- |
 | `name` | object | Recipe name. |
@@ -30,6 +31,7 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 <br>
 
 And `ratings` contained the following 5 columsn with 731927 rows:
+
 | Column Name | Dtype | Description |
 | --------- | -------- | -------- |
 | `user_id` | float64 | User ID. |
@@ -50,6 +52,7 @@ So, for this, I picked `minutes`, `n_steps`, and `rating` for my investigation.
 Before I could fully dive into the analysis, I had to clean up the data to make it usable. First, I replaced all empty values with `NaN` values and then dropped all rows with NaN values. I also dropped rows with 0 as their rating as all ratings are in between 1-5, 0 for their number of ingredients, 0 for their number of steps, and 0 for their total minutes as they all indicate that there is an error with the recipe. After cleaning up the data, I also included two more columns, `avg_rating` and `efficiency`, where `avg_rating` represents that average rating the recipe received and `efficiency` the measurement of how efficient a recipe was represented by number of steps per minute according to the recipe. After dropping any possible further `NaN` values, I was left with a dataframe called `df_clean`. Although I included `avg_rating` to the dataframe, I will be using `rating` for the investigation.
 
 Here is the `head` of `df_clean`:
+
 <div style="overflow-x: auto; white-space: nowrap;">
   
 | name | id | minutes | contributor_id | submitted | tags | nutrition | n_steps | steps | description | ingredients | n_ingredients | user_id | recipe_id | date | rating | review | avg_rating | efficiency |
