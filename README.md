@@ -39,6 +39,7 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 And `ratings` contained the following 5 columsn with 731927 rows:
 
 <div style="overflow-x: auto;">
+  
 | Column Name | Dtype | Description |
 | --------- | -------- | -------- |
 | `user_id` | float64 | User ID. |
