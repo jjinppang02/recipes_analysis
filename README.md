@@ -252,7 +252,7 @@ The final model achieves a MAE of 4.645 minutes, drastically improving on the ba
 <br>
 
 #  **Fairness Analysis**
-To assess whether the model treats all recipes fairly, recipes in the test set were split into two groups by binarizing n_steps at the median of 9: simple recipes (<= 9 steps) and complex recipes (> 9 steps). This is a meaningful fairness question because complex, multi-step recipes tend to have more variable cook times, making them harder to predict.
+To assess whether the model treats all recipes fairly, recipes in the test set were split into two groups by binarizing `n_steps` at the median of 9: simple recipes (<= 9 steps) and complex recipes (> 9 steps). This is a meaningful fairness question because complex, multi-step recipes tend to have more variable cook times, making them harder to predict.
 
 RMSE was chosen as the evaluation metric, and the test statistic was defined as the difference between RMSE(complex) and RMSE(simple) (one-sided test). These were the hypotheses and significance level used to test this: 
 
