@@ -117,7 +117,7 @@ Recipe Counts: Rating Group × Efficiency Quartile
 | Mid (3–4) | 9681 | 10078 | 8649 | 8867 |
 | Very High (>4.5) | 41657 | 44005 | 41290 | 42603 |
 
-This table gives us a little more insight into what we saw earlier. From this, we can see further that due to the natural tendency users have to give recipes high ratings generally, we can see efficiency does not have much influence over mid to high ratings. However, interestingly, we see in low reviews that efficiency does have some influence, where not efficient recipes made up most of the low-rated recipes. What we can infer from this data is that negative reviews tend to be more critical, where efficiency does show up as a factor in rating for low-rated recipes.
+This table gives us a little more insight into what we saw earlier. From this, it is hinted that efficiency does not have much influence over mid to high ratings, at least for this dataset. However, interestingly, we see in low reviews that efficiency does have some influence, where not efficient recipes made up most of the low-rated recipes. What we can infer from this data is that negative reviews tend to be more critical, where efficiency does show up as a factor in rating for low-rated recipes.
 
 <br>
 
@@ -196,7 +196,7 @@ It is also important to note that values were capped at 300 for this permutation
 <br>
 
 # **Hypothesis Testing**
-With all this in mind, let us turn back to the question at hand, "Are recipes given higher ratings if they are more efficient?" I ran a two-sided permutation test since I wanted to explore if the distributions are similar between efficiency quartiles (specifically between Q1 (Not Efficient) and Q4 (Very Efficient)) in terms of rating (specifically high-ratings (>= 4.5)). To address this question, these were the designed hypotheses, test statistic, and significance level used:
+With all this in mind, let us turn back to the question at hand, "Are recipes given higher ratings if they are more efficient?" I ran a two-sided permutation test in order to answer the question by exploring if the distributions are similar between efficiency quartiles (specifically between Q1 (Not Efficient) and Q4 (Very Efficient)) in terms of rating (specifically high-ratings (>= 4.5) since that is the nature of the question and majority of the ratings were high). To address this question, these were the designed hypotheses, test statistic, and significance level used:
 
 <br>
 
@@ -220,3 +220,18 @@ Here was the resulting graph:
   height="500" 
   frameborder="0"
 ></iframe>
+
+<br>
+
+# **Problem Identification**
+On the area of efficiency, I wanted to also predict how long a recipe would take to finish in minutes. That way, people can see generally how long a recipe might take despite what is claimed by the recipe creator or if the creator did not provide a time estimate of the recipe. This is a regression problem, in which we will try to fit a model that predicts the minutes it takes to prepare a recipe.
+
+The response variable will be `minutes`, since we are interested in predicting the length it takes to prepare a recipe. The metric I used to evalute my model was Mean Absolute Error (MAE). Although Root Mean Squared Error (RMSE) and R<sup>2<sup> are viable metrics to use, I settled for MAE because I did not need to punish big misses heavily; being off by 60 minutes, for example, isn't sixteen times worse than being off by 15 minutes, it's just proprotionally worse in this case. MAE reflects the intuition directly, and R<sup>2<sup> shows variance but doesn't necessarily answer the question of "how wrong is the model" unlike MAE. Additionally, MAE stays grounded in raw prediction error and is harder to flatter.
+
+At the time of prediction, I am assuming that we would know at least `tags`, `n_steps`, and `n_ingredients` as we are trying to predict `minutes` in scenarios that the recipe poster forgot to include the `minutes` information, in which we are also assuming that none of these columns are dependent on `minutes` (which should be the case) or how long a recipe would actually take despite the posted amount.
+
+<br>
+
+# **Baseline Model**
+The baseline model will use a train-test split to separate our DataFrame into training and test groups. A Linear Regression model will be fit using our training data. The features used for the baseline will be n_steps, n_ingredients, and four binary features extracted from the tags column: tag_15_minutes_or_less, tag_30_minutes_or_less, tag_60_minutes_or_less, and tag_4_hours_or_less. The numerical features n_steps and n_ingredients will be standardized using StandardScaler so that they are on a comparable scale. The binary tag features are already 0/1 encoded and are passed through as-is.
+The RMSE of this model is 33.73 minutes, the MAE is 15.14 minutes, and the R² is 0.830. For context, a naive baseline that always predicts the mean cook time yields an RMSE of 81.83 minutes, meaning our model cuts the error by more than half. The strong performance is largely driven by the time-based tag features, which directly encode cook time buckets. The remaining error can be explained by the inherent variability in cook times even within those buckets — a 60-minutes-or-less recipe could take anywhere from 1 to 60 minutes, which a linear model cannot resolve without more granular features.
