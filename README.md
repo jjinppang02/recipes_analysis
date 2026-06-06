@@ -35,7 +35,6 @@ When it comes to recipes, there is much that can be analyzed. One thing that I w
 And `ratings` contained the following 5 columsn with 731927 rows:
 
 <div style="overflow-x: auto;">
-
 | Column Name | Dtype | Description |
 | --------- | -------- | -------- |
 | `user_id` | float64 | User ID. |
@@ -43,7 +42,6 @@ And `ratings` contained the following 5 columsn with 731927 rows:
 | `date` | object| Date of interaction. |
 | `rating` | float64 | Rating given. |
 | `review` | object | Review text. |
-
 </div>
 
 <br>
@@ -130,3 +128,20 @@ As most of our investigation is done on `rating`, `n_steps`, and `minutes`, I wa
 First, we will look to see if there is a dependency between `rating` and `n_steps`. As such, these are the hypotheses used to test this:
 **Null Hypothesis**: missingness of rating does not depend on n_steps
 **Alternative Hypothesis**: missingness of rating does depend on n_steps
+
+I simulated 500 permutations of the `rating_missing` column, which indicates with a `boolean` whether or not a row is missing `rating` data. The resulting observed statistic was 1.3386 and the p-value was 0.000, meaning we reject the null hypothesis. The missingness of `rating` does not depend on `n_steps`. Here are the plots of the results.
+
+<iframe 
+  src="assets/plot_nsteps_distribution.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
+
+<iframe 
+  src="assets/plot_nsteps_permutation.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
+
