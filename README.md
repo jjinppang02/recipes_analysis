@@ -117,7 +117,7 @@ Recipe Counts: Rating Group × Efficiency Quartile
 | Mid (3–4) | 9681 | 10078 | 8649 | 8867 |
 | Very High (>4.5) | 41657 | 44005 | 41290 | 42603 |
 
-This table gives us a little more insight into what we saw earlier. From this, we can confirm that due to the natural tendency users have to give recipes high ratings generally, we can see efficiency does not have much influence over mid to high ratings. However, interestingly, we see in low reviews that efficiency does have some influence, where not efficient recipes made up most of the low-rated recipes. What we can infer from this data is that negative reviews tend to be more critical, where efficiency does show up as a factor in rating for low-rated recipes.
+This table gives us a little more insight into what we saw earlier. From this, we can see further that due to the natural tendency users have to give recipes high ratings generally, we can see efficiency does not have much influence over mid to high ratings. However, interestingly, we see in low reviews that efficiency does have some influence, where not efficient recipes made up most of the low-rated recipes. What we can infer from this data is that negative reviews tend to be more critical, where efficiency does show up as a factor in rating for low-rated recipes.
 
 <br>
 
@@ -196,6 +196,27 @@ It is also important to note that values were capped at 300 for this permutation
 <br>
 
 # **Hypothesis Testing**
-
+With all this in mind, let us turn back to the question at hand, "Are recipes given higher ratings if they are more efficient?" I ran a two-sided permutation test since I wanted to explore if the distributions are similar between efficiency quartiles (specifically between Q1 (Not Efficient) and Q4 (Very Efficient)) in terms of rating (specifically high-ratings (>= 4.5)). To address this question, these were the designed hypotheses, test statistic, and significance level used:
 
 <br>
+
+**Null Hypothesis**: The proportion of recipes rated >= 4.5 is the same for the slowest (Q1) and fastest (Q4) efficiency groups. Any observed difference is due to random chance.
+
+**Alternative Hypothesis**: The proportion of recipes rated >= 4.5 is higher for the fastest efficiency group (Q4) than the slowest (Q1).
+
+**Test Stastic**: The difference in proportions of recipes rated >= 4.5 between Q4 and Q1
+
+**Significance Level**: We used a significance level of 0.05
+
+<br>
+
+After running the permutation test, I got a p-value of 0.000, meaning we reject the null hypothesis. This means that the proportion of high-rated recipes is significantly different between Q1 and Q4, providing evidence that more efficient recipes are significantly more likely to receive a high rating than not efficient recipes.
+
+Here was the resulting graph:
+
+<iframe 
+  src="assets/permutation_test_q1_q4.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
