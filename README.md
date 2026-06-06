@@ -245,7 +245,7 @@ The final model uses the same train-test split as the baseline. A Random Forest 
 
 On top of the baseline features, two new features are engineered. `n_steps_sq` is the square of n_steps; the relationship between steps and cook time is non-linear, since adding a 15th step to a recipe, for example, adds far more time than adding a 2nd step. `steps_per_ingredient` is the ratio of steps to ingredients, capturing recipe complexity; a high-step, low-ingredient recipe implies time-intensive technique, while a high-ingredient, low-step recipe is quick. Two additional numeric features, `calories` and `total_fat` parsed from the nutrition column, are included and transformed with a QuantileTransformer to handle their heavy right skew; a small number of extremely high-calorie recipes would otherwise dominate tree splits.
 
-The hyperparameters tuned are max_depth (controls overfitting — deeper trees memorise noise) and min_samples_split (regularises leaf-node splits). GridSearchCV with 3-fold CV selects max_depth=10 and min_samples_split=10.
+The hyperparameters tuned are max_depth (controls overfitting — deeper trees memorise noise) and min_samples_split (regularises leaf-node splits). GridSearchCV with 3-fold CV selects max_depth=None and min_samples_split=2.
 
 The final model achieves a MAE of 4.645 minutes, drastically improving on the baseline MAE using the same held-out test set.
 
