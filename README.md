@@ -235,7 +235,7 @@ At the time of prediction, I am assuming that we would know at least `tags`, `n_
 # **Baseline Model**
 The baseline model will use a train-test split to separate our DataFrame into training and test groups. A Linear Regression model will be fit using our training data. The features used for the baseline will be n_steps, n_ingredients, and four binary features extracted from the tags column: 15-minutes-or-less, 30-minutes-or-less, 60-minutes-or-less, and 4-hours-or-less. The numerical features n_steps and n_ingredients will be standardized using StandardScaler so that they are on a comparable scale. The binary tag features are already 0/1 encoded and are passed through as it is.
 
-The MAE I got from this model was 15.14 minutes. Intuitively, this demonstrates that my model is "good." The strong performance is largely driven by the time-based tag features, which directly encode cook time buckets. The remaining error can be explained by the inherent variability in cook times even within those buckets; a 60-minutes-or-less recipe could take anywhere from 1 to 60 minutes, which a linear model cannot resolve without more granular features.
+The MAE I got from this model was 15.138 minutes. Intuitively, this demonstrates that my model is "good." The strong performance is largely driven by the time-based tag features, which directly encode cook time buckets. The remaining error can be explained by the inherent variability in cook times even within those buckets; a 60-minutes-or-less recipe could take anywhere from 1 to 60 minutes, which a linear model cannot resolve without more granular features.
 
 <br>
 
@@ -246,7 +246,7 @@ On top of the baseline features, two new features are engineered. n_steps_sq is 
 
 The hyperparameters tuned are max_depth (controls overfitting — deeper trees memorise noise) and min_samples_split (regularises leaf-node splits). GridSearchCV with 3-fold CV selects max_depth=10 and min_samples_split=10.
 
-The final model achieves a MAE of 14.55 minutes, improving on the baseline MAE using the same held-out test set.
+The final model achieves a MAE of 4.645 minutes, drastically improving on the baseline MAE using the same held-out test set.
 
 <br>
 
@@ -261,6 +261,13 @@ RMSE was chosen as the evaluation metric, and the test statistic was defined as 
 
 **Significance Level**: 0.05
 
-The results support the alternative hypothesis. Simple recipes had an RMSE of 30.82 minutes while complex recipes had an RMSE of 33.41 minutes, an observed difference of 2.58. A permutation test yielded a p-value of 0.026, below the 0.05 significance level, and the observed gap fell in the tail of the permutation distribution, which never exceeded roughly 4.4 minutes by chance alone. The null hypothesis is therefore rejected.
+The results do not support the alternative hypothesis. Simple recipes had an RMSE of 27.59 minutes, while complex recipes had an RMSE of 28.63 minutes, an observed difference of 1.03 minutes. A permutation test produced a p‑value of 0.068, which is above the 0.05 significance threshold, and the observed gap falls well within the middle of the permutation distribution rather than in its tail. The null hypothesis is therefore not rejected.
 
-This means the model performs significantly worse on complex recipes, and the difference is unlikely to be random. The most probable explanation is that complex recipes have more variable cook times that the current feature set, particularly `n_steps` and `n_ingredients` along with the binary time tags, cannot adequately capture. Addressing this would likely require richer features that better reflect the nature of multi-step cooking processes.
+This means the model does not perform significantly worse on complex recipes, and the small difference in RMSE is likely due to random variation rather than systematic bias. The most plausible interpretation is that while complex recipes are naturally harder to predict, the model’s feature set, including n_steps, n_ingredients, and the binary time tags, provides enough structure for the model to handle both simple and complex recipes with comparable accuracy.
+
+<iframe 
+  src="assets/fairness_permutation_test.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
