@@ -233,5 +233,34 @@ At the time of prediction, I am assuming that we would know at least `tags`, `n_
 <br>
 
 # **Baseline Model**
-The baseline model will use a train-test split to separate our DataFrame into training and test groups. A Linear Regression model will be fit using our training data. The features used for the baseline will be n_steps, n_ingredients, and four binary features extracted from the tags column: tag_15_minutes_or_less, tag_30_minutes_or_less, tag_60_minutes_or_less, and tag_4_hours_or_less. The numerical features n_steps and n_ingredients will be standardized using StandardScaler so that they are on a comparable scale. The binary tag features are already 0/1 encoded and are passed through as-is.
-The RMSE of this model is 33.73 minutes, the MAE is 15.14 minutes, and the R² is 0.830. For context, a naive baseline that always predicts the mean cook time yields an RMSE of 81.83 minutes, meaning our model cuts the error by more than half. The strong performance is largely driven by the time-based tag features, which directly encode cook time buckets. The remaining error can be explained by the inherent variability in cook times even within those buckets — a 60-minutes-or-less recipe could take anywhere from 1 to 60 minutes, which a linear model cannot resolve without more granular features.
+The baseline model will use a train-test split to separate our DataFrame into training and test groups. A Linear Regression model will be fit using our training data. The features used for the baseline will be n_steps, n_ingredients, and four binary features extracted from the tags column: 15-minutes-or-less, 30-minutes-or-less, 60-minutes-or-less, and 4-hours-or-less. The numerical features n_steps and n_ingredients will be standardized using StandardScaler so that they are on a comparable scale. The binary tag features are already 0/1 encoded and are passed through as it is.
+
+The MAE I got from this model was 15.14 minutes. Intuitively, this demonstrates that my model is "good." The strong performance is largely driven by the time-based tag features, which directly encode cook time buckets. The remaining error can be explained by the inherent variability in cook times even within those buckets; a 60-minutes-or-less recipe could take anywhere from 1 to 60 minutes, which a linear model cannot resolve without more granular features.
+
+<br>
+
+# **Final Model**
+The final model uses the same train-test split as the baseline. A Random Forest Regressor is fit using training data, chosen over Linear Regression because cook time has a non-linear relationship with its predictors and tree-based models handle this naturally.
+
+On top of the baseline features, two new features are engineered. n_steps_sq is the square of n_steps; the relationship between steps and cook time is non-linear, since adding a 15th step to a recipe, for example, adds far more time than adding a 2nd step. steps_per_ingredient is the ratio of steps to ingredients, capturing recipe complexity; a high-step, low-ingredient recipe implies time-intensive technique, while a high-ingredient, low-step recipe (e.g. a salad) is quick. Two additional numeric features, calories and total_fat parsed from the nutrition column, are included and transformed with a QuantileTransformer to handle their heavy right skew; a small number of extremely high-calorie recipes would otherwise dominate tree splits.
+
+The hyperparameters tuned are max_depth (controls overfitting — deeper trees memorise noise) and min_samples_split (regularises leaf-node splits). GridSearchCV with 3-fold CV selects max_depth=10 and min_samples_split=10.
+
+The final model achieves a MAE of 14.55 minutes, improving on the baseline MAE using the same held-out test set.
+
+<br>
+
+#  **Fairness Analysis**
+To assess whether the model treats all recipes fairly, recipes in the test set were split into two groups by binarizing n_steps at the median of 9: simple recipes (<= 9 steps) and complex recipes (> 9 steps). This is a meaningful fairness question because complex, multi-step recipes tend to have more variable cook times, making them harder to predict.
+
+RMSE was chosen as the evaluation metric, and the test statistic was defined as the difference between RMSE(complex) and RMSE(simple) (one-sided test). These were the hypotheses and significance level used to test this: 
+
+**Null Hypothesis**: The model is fair. Its RMSE for simple complex recipes are roughly the same, and any observed difference is due to random chance 
+
+**Alternative Hypothesis**: The model is unfair. Its RMSE for complex recipes is higher than its RMSE for simple recipes 
+
+**Significance Level**: 0.05
+
+The results support the alternative hypothesis. Simple recipes had an RMSE of 30.82 minutes while complex recipes had an RMSE of 33.41 minutes, an observed difference of 2.58. A permutation test yielded a p-value of 0.026, below the 0.05 significance level, and the observed gap fell in the tail of the permutation distribution, which never exceeded roughly 4.4 minutes by chance alone. The null hypothesis is therefore rejected.
+
+This means the model performs significantly worse on complex recipes, and the difference is unlikely to be random. The most probable explanation is that complex recipes have more variable cook times that the current feature set, particularly `n_steps` and `n_ingredients` along with the binary time tags, cannot adequately capture. Addressing this would likely require richer features that better reflect the nature of multi-step cooking processes.
