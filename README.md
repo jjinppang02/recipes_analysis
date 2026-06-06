@@ -1,5 +1,6 @@
+---
 title: A Dive Into the Efficiency of Recipes 
-
+---
 
 # **Overview**
 For the DSC 80 Spring Final Project, I chose to investigate the Recipes Data Set!
@@ -129,10 +130,16 @@ Before cleaning up the dataframe, I noticed that there many columns with `NaN` a
 As most of our investigation is done on `rating`, `n_steps`, and `minutes`, I wanted to explore if the missingness of `rating` depended on either one of these columns.
 
 First, we will look to see if there is a dependency between `rating` and `n_steps`. As such, these are the hypotheses used to test this:
+
+<br>
+
 **Null Hypothesis**: missingness of rating does not depend on n_steps
+
 **Alternative Hypothesis**: missingness of rating does depend on n_steps
 
-I simulated 500 permutations of the `rating_missing` column, which indicates with a `boolean` whether or not a row is missing `rating` data. The resulting observed statistic was 1.3386 and the p-value was 0.000, meaning we reject the null hypothesis. The missingness of `rating` does not depend on `n_steps`. Here are the plots of the results.
+<br>
+
+And below is the distrbution of `n_steps` by `rating_missingness`, which indicates with a `boolean` whether or not a row is missing `rating` data.
 
 <iframe 
   src="assets/plot_nsteps_distribution.html" 
@@ -141,6 +148,10 @@ I simulated 500 permutations of the `rating_missing` column, which indicates wit
   frameborder="0"
 ></iframe>
 
+<br>
+
+I simulated 500 permutations of the `rating_missing` column. The resulting observed statistic was 1.3386 and the p-value was 0.000, meaning we reject the null hypothesis. The missingness of `rating` does depend on `n_steps`. Here are the plot of the results.
+
 <iframe 
   src="assets/plot_nsteps_permutation.html" 
   width="800" 
@@ -148,3 +159,43 @@ I simulated 500 permutations of the `rating_missing` column, which indicates wit
   frameborder="0"
 ></iframe>
 
+<br>
+
+Next, I tested if there is a dependency between `rating` and `minutes`. Again, here are the hypotheses used and the distribution of `minutes` by `rating_missingness`.
+
+<br>
+
+**Null Hypothesis**: missingness of rating does not depend on minutes
+
+**Alternative Hypothesis**: missingness of rating does depend on minutes
+
+<br>
+
+<iframe 
+  src="assets/plot_minutes_distribution.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
+
+<br>
+
+The same process for `n_steps` was used for this permutation test. The resulting observed stat was 51.4524 and the p-value was 0.1220, meaning we fail to reject the null hypothesis; the missingness of `rating` does not depend on `minutes`. Here are the plot of the results.
+
+<iframe 
+  src="assets/plot_minutes_permutation.html" 
+  width="800" 
+  height="500" 
+  frameborder="0"
+></iframe>
+
+<br>
+
+It is also important to note that values were capped at 300 for this permutation test due to the very high outliers `minutes` had.
+
+<br>
+
+# **Hypothesis Testing**
+
+
+<br>
