@@ -54,6 +54,8 @@ A question that I wanted to specifically answer in this investigation was "Are h
 
 So, for this, I picked `minutes`, `n_steps`, and `rating` for my investigation.
 
+<br>
+
 # **Data Cleaning**
 Before I could fully dive into the analysis, I had to clean up the data to make it usable. First, I replaced all empty values with `NaN` values and then dropped all rows with NaN values. I also dropped rows with 0 as their rating as all ratings are in between 1-5, 0 for their number of ingredients, 0 for their number of steps, and 0 for their total minutes as they all indicate that there is an error with the recipe. After cleaning up the data, I also included two more columns, `avg_rating` and `efficiency`, where `avg_rating` represents that average rating the recipe received and `efficiency` the measurement of how efficient a recipe was represented by number of steps per minute according to the recipe. After dropping any possible further `NaN` values, I was left with a dataframe called `df_clean`. Although I included `avg_rating` to the dataframe, I will be using `rating` for the investigation.
 
@@ -99,3 +101,32 @@ For the bivariate analysis, I delved into the conditional distribution of rating
   frameborder="0"
 ></iframe>
 
+This plot shows the conditional distribution of recipe ratings across efficiency quartiles. All quartile, ranging from slow (Q1) to fast (Q4, exhibit nearly identical patterns, with a dominant peak near rating 5, suggesting that recipe efficiency has little effect on users' ratings since most recipes, regardless of efficiency, receive high ratings, as we saw in the univariate analysis.
+
+<br>
+
+# **Interesting Aggregates**
+
+Recipe Counts: Rating Group × Efficiency Quartile
+
+| Rating Group / Efficiency Quartiles | Q1 (Not Efficient) | Q2 | Q3 | Q4 (Very Efficient) |
+| --- | --- | --- | --- | --- |
+| Low (<3) | 3580 | 3246 | 2790 | 2782 |
+| Mid (3–4) | 9681 | 10078 | 8649 | 8867 |
+| Very High (>4.5) | 41657 | 44005 | 41290 | 42603 |
+
+This table gives us a little more insight into what we saw earlier. From this, we can confirm that due to the natural tendency users have to give recipes high ratings generally, we can see efficiency does not have much influence over mid to high ratings. However, interestingly, we see in low reviews that efficiency does have some influence, where not efficient recipes made up most of the low-rated recipes. What we can infer from this data is that negative reviews tend to be more critical, where efficiency does show up as a factor in rating for low-rated recipes.
+
+<br>
+
+# **NMAR Analysis**
+Before cleaning up the dataframe, I noticed that there many columns with `NaN` and missing values. Out of these, it is likely that `review` and `efficiency` is Not Missing At Random (NMAR). The reasoning behind this is that there may be some users that left a rating but did not write a review. Additionally, `efficiency` is NMAR as we calculated this from `n_steps` and `minutes`, depending on these values. In order for `efficiency` to have a `NaN` value would be if a value used to calculate it was `NaN` or if `minutes` was 0, creating a division error.
+
+<br>
+
+# **Missingness Dependency**
+As most of our investigation is done on `rating`, `n_steps`, and `minutes`, I wanted to explore if the missingness of `rating` depended on either one of these columns.
+
+First, we will look to see if there is a dependency between `rating` and `n_steps`. As such, these are the hypotheses used to test this:
+**Null Hypothesis**: missingness of rating does not depend on n_steps
+**Alternative Hypothesis**: missingness of rating does depend on n_steps
