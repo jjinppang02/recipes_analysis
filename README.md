@@ -266,6 +266,8 @@ The results do not support the alternative hypothesis. Simple recipes had an RMS
 
 This means the model does not perform significantly worse on complex recipes, and the small difference in RMSE is likely due to random variation rather than systematic bias. The most plausible interpretation is that while complex recipes are naturally harder to predict, the model’s feature set, including n_steps, n_ingredients, and the binary time tags, provides enough structure for the model to handle both simple and complex recipes with comparable accuracy.
 
+Here is the plot of the results:
+
 <iframe 
   src="assets/fairness_permutation_test.html" 
   width="800" 
